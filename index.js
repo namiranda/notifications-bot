@@ -1,7 +1,6 @@
 const express = require('express')
 const puppeteer = require('puppeteer-extra')
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
-const fs = require('fs');
 const app = express()
 const port = 3000
 
@@ -12,14 +11,14 @@ app.listen(port, () => {
 })
 
 
-getProductList().then(products => {
-    console.log(products)
+getProductList().then(items => {
+    console.log(items)
 })
 
 async function getProductList() {
     let currentPage = 1
     let hasNextPage = true
-    let products = []
+    let allItems = []
     const baseUrl = 'https://tienda.personal.com.ar/celulares/samsung?page='
 
     const browser = await puppeteer.launch()
@@ -33,15 +32,23 @@ async function getProductList() {
         await page.screenshot({ path: 'image.png', fullPage: true }); 
 
         const items = await page.evaluate(() => {
-            const items = Array.from(document.querySelectorAll('.emsye877'))
-            return items.map(item => item.textContent);
+            const items = [];
+            const productList = document.querySelectorAll('.emsye877');
+            productList.forEach(product => {
+                const title = product.querySelector('.emsye884').textContent.trim();
+                const price = product.querySelector('.emsye87g').textContent.trim();
+                items.push({ title, price });
+            });
+            return items;
         });
 
-        console.log(items); 
+        allItems.push(...items)
 
-       hasNextPage = false
+       
+        hasNextPage = currentPage <= 2
         currentPage++
     }
+
     await browser.close()
-    return products
+    return allItems
 }
