@@ -1,0 +1,17 @@
+{
+  "name": "notifications-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/namiranda/notifications-bot.git",
+  "author": "noelia <naylenmiranda@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.1",
+    "puppeteer": "^22.6.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}
