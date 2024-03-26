@@ -20,11 +20,6 @@ app.listen(port, () => {
 })
 
 
-getProductList().then(items => {
-    console.log(items)
-    console.log(getTargetItems(items, "S22"))
-})
-
 async function getProductList() {
     let currentPage: number = 1
     let hasNextPage: boolean = true
@@ -73,13 +68,23 @@ function getTargetItems(items, title): Array<Item> {
 }
 
 bot.on('message', (msg) => {
-
-    var Hi = "quien es el gatito mas cute";
-    if (msg.text.toString().toLowerCase().indexOf(Hi) === 0) {
-    bot.sendMessage(msg.chat.id,"pipi");
+    if (msg.text.toString().toLowerCase().indexOf("Hi") === 0) {
+    bot.sendMessage(msg.chat.id,"Hi");
     }
     
 });
+
+setInterval(() => {
+    const chatId = process.env.CHAT_ID
+
+    getProductList().then(items => {
+        let myItems = getTargetItems(items, "S22")
+        if(myItems.length > 0 && chatId){
+            bot.sendMessage(chatId, "Producto disponible en la tienda: " +  myItems.flatMap((i) => i.title));
+        }
+    })
+
+}, 5 * 60 * 1000); // 5 minutes in 
 
 interface Item {
     title: string,
