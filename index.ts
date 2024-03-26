@@ -1,8 +1,17 @@
 const express = require('express')
 const puppeteer = require('puppeteer-extra')
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+const TelegramBot = require('node-telegram-bot-api');
+require('dotenv').config()
+
+
 const app = express()
 const port = 3000
+
+const token = process.env.TOKEN
+
+const bot = new TelegramBot(token, {polling: true});
+
 
 puppeteer.use(StealthPlugin())
 
@@ -13,6 +22,7 @@ app.listen(port, () => {
 
 getProductList().then(items => {
     console.log(items)
+    console.log(getTargetItems(items, "S22"))
 })
 
 async function getProductList() {
@@ -29,7 +39,6 @@ async function getProductList() {
     while(hasNextPage) {
         console.log('Scraping page', currentPage)
         await page.goto(`${baseUrl}${currentPage}`)
-        await page.screenshot({ path: 'image.png', fullPage: true }); 
 
         const items: Array<Item>  = await page.evaluate(() => {
             const items: Array<Item> = [];
@@ -53,6 +62,24 @@ async function getProductList() {
     return allItems
 }
 
+function getTargetItems(items, title): Array<Item> {
+    let result: Array<Item> = []
+    items.forEach(item => {
+        if(item.title.includes(title)){
+             result.push(item)
+        }
+    })
+    return result;
+}
+
+bot.on('message', (msg) => {
+
+    var Hi = "quien es el gatito mas cute";
+    if (msg.text.toString().toLowerCase().indexOf(Hi) === 0) {
+    bot.sendMessage(msg.chat.id,"pipi");
+    }
+    
+});
 
 interface Item {
     title: string,
