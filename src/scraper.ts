@@ -25,8 +25,8 @@ export async function getItemsList(category: string, brand: string) {
             const items: Array<Item> = [];
             const itemsList = document.querySelectorAll('.emsye877');
             itemsList.forEach(product => {
-                const title = product.querySelector('.emsye884')?.textContent?.trim() || '';
-                const price = product.querySelector('.emsye87g')?.textContent?.trim() || '';
+                const title = product.querySelector('.emsye884')?.textContent || '';
+                const price = product.querySelector('.emsye87g')?.textContent || '';
                 items.push({ title, price });
             });
             return items;

@@ -13,6 +13,7 @@ const bot = new TelegramBot(token, {polling: true});
 //TODO: make these parameters dynamic through the bot
 const category = 'celulares'
 const brand = 'samsung'
+const model = 'S24'
 
 
 app.listen(port, () => {
@@ -20,5 +21,5 @@ app.listen(port, () => {
 })
 
 handleCommands(bot);
-startScheduler(bot);
-
+startScheduler(bot, category, brand, model, 5 * 60 * 1000);
+startScheduler(bot, "celulares", "Samsung", "S22", 60 * 60 * 1000); //To test if the bot is working
