@@ -6,7 +6,7 @@
   "author": "noelia <naylenmiranda@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "tsc index.ts && node index.js"
+    "start": "cd src && tsc server.ts && node server.js"
   },
   "dependencies": {
     "@types/node-telegram-bot-api": "^0.64.6",
